@@ -17,6 +17,7 @@ class IndexProductRequest extends FormRequest
             'category_id' => 'sometimes|integer',
             'rating_from' => 'sometimes|integer',
             'sort' => [new Enum(ProductSortEnum::class), 'nullable'],
+            'per_page' => 'sometimes|integer',
         ];
     }
 }

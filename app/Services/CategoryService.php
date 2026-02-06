@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {
@@ -15,5 +16,14 @@ class CategoryService
     {
         $category->update($data);
         return $category;
+    }
+
+    public function listCategories($per_page = 10): LengthAwarePaginator
+    {
+        return Category::query()->paginate($per_page);
+    }
+    public function delete(Category $category): void
+    {
+        $category->delete();
     }
 }

@@ -11,16 +11,16 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    protected $categoryService;
+    protected CategoryService $categoryService;
 
     public function __construct(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return CategoryResource::collection(Category::query()->paginate(10));
+        return CategoryResource::collection($this->categoryService->listCategories($request->per_page));
     }
 
     public function show(Category $category)
@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $category->delete();
+        $this->categoryService->delete($category);
 
         return response()->noContent();
     }

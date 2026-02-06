@@ -21,12 +21,12 @@ class ProductController extends Controller
     public function index(IndexProductRequest $request)
     {
         $validated = $request->validated();
-        return ProductResource::collection(Product::query()->filter($validated)->sort($validated['sort'] ?? null)->paginate($request->per_page ?? 10));
+        return ProductResource::collection($this->productService->listProducts($validated));
     }
 
     public function show(Product $product)
     {
-        return ProductResource::make($product);
+        return ProductResource::make($product->load('category'));
     }
 
     public function store(StoreProductRequest $request)
@@ -41,7 +41,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $product->delete();
+        $this->productService->delete($product);
         return response()->noContent();
     }
 }

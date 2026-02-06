@@ -16,4 +16,14 @@ class ProductService
         $product->update($data);
         return $product;
     }
+
+    public function listProducts($data): Product
+    {
+        return Product::query()->filter($data)->sort($data['sort'] ?? null)->with('category')->paginate($data['sort'] ?? 10);
+    }
+
+    public function delete(Product $product): void
+    {
+        $product->delete();
+    }
 }
